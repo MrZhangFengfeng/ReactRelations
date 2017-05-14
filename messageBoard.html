@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>board</title>
+        <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+		<script type="text/javascript" src='react/build/react-with-addons.js'></script>
+		<script type="text/javascript" src='react/build/react-dom.js'></script>
+		<script type="text/javascript" src='react/build/pubsub.js'></script>
+		<script type="text/javascript" src='https://npmcdn.com/babel-core@5.8.38/browser.min.js'></script>
+	</head>
+	<style type="text/css">
+		header{
+			box-shadow:  0 0 20px #ccc;
+		}
+		#demo{
+			padding-top: 20px;
+		}
+		label{
+			font-size: 20px;
+		}
+		.list-group-item{
+			margin-bottom: 10px;
+		}
+		.handle{
+			float: right;
+		}
+		.handle a{
+			color: #666;
+		}
+		.user span{
+			display: inline-block;
+			margin-right: 5px;
+			font-weight: bold;
+		}
+		.user i{
+			font-style: normal;
+		}
+		.reply{
+			margin-top: 0;
+			font-size: 20px;
+			font-weight: bold;
+		}
+	</style>
+	<body>
+		<header class="site-header jumbotron">
+	        <div class="container">
+	            <div class="row">
+	                <div class="col-xs-12">
+	                    <h1>ReactJs</h1>
+	                    <p class="lead">React是一个为数据提供渲染为HTML视图的开源JavaScript 库。React视图通常采用包含以自定义HTML标记规定的其他组件的组件渲染。React为程序员提供了一种子组件不能直接影响外层组件（"data flows down"）的模型，数据改变时对HTML文档的有效更新，和现代单页应用中组件之间干净的分离。
+它由Facebook、Instagram和一个由个人开发者和企业组成的社群维护。根据JavaScript分析服务Libscore，React目前正在被Netflix、Imgur、Bleacher Report、Feedly、Airbnb、SeatGeek、HelloSign等很多网站的主页使用。</p>
+	                </div>
+	            </div>
+	        </div>
+	    </header>
+		<div id="demo"></div>
+
+		<script type="text/babel">
+			var delectItem = 'delectItem';
+
+			var MainComponent = React.createClass({
+				getInitialState:function (){
+					return {
+						listArr:this.props.listArr
+					}	
+				},
+				componentDidMount:function(){
+					PubSub.subscribe(delectItem,function(evName,data){
+						var newArr = this.state.listArr.filter(function(item,index){
+							return item._id !== data
+						});
+						this.setState({listArr : newArr})
+					}.bind(this))
+					console.log('组件渲染完成')
+				},
+				addItem : function(data){
+					this.state.listArr.push(data);
+					this.setState({listArr:this.state.listArr});
+				},
+				render:function(){
+					return (
+						<div className="container">
+							<MesComponent addItem={this.addItem}/>
+							<ListComponent listArr={this.state.listArr}/>
+						</div>
+					)
+				}
+			})
+
+			var ListComponent = React.createClass({
+				render:function(){
+					var isNone = this.props.listArr.length ? 'none' : 'block';
+					return (
+						<div className="col-md-7">
+							<h3 className="reply">留言回复：</h3>
+							<h2 style={{display:isNone}}>暂无留言，点击左侧添加留言！！！</h2>
+							<ul className="list-group">
+								{
+								this.props.listArr.map(function(item,index){
+										return <ItemComponent key={index} {...item}/>
+									})
+								}
+							</ul>
+				        </div>
+					)
+				}
+			})
+
+			var ItemComponent = React.createClass({
+				render:function(){
+					return (
+						<li className="list-group-item">
+							<div className="handle" >
+								<a href="javascript:;" onClick={this.deleteHandle}>删除</a>
+							</div>
+							<p className="user" ><span >{this.props.userName}</span><i>说:</i></p>
+							<p className="centence">{this.props.content}</p>
+						</li>
+					)
+				},
+				deleteHandle:function(){					
+					PubSub.publish(delectItem,this.props._id);
+				}
+			})
+
+			var MesComponent = React.createClass({
+				render:function(){
+					return (
+						<div className="col-md-5">
+							<form className="form-horizontal">
+								<div className="form-group">
+									<label>用户名</label>
+									<input type="text" ref="text_user" className="form-control" placeholder="用户名" />
+								</div>
+								<div className="form-group">
+									<label>留言内容</label>
+									<textarea className="form-control" ref="text_content" rows="6" placeholder="留言内容"></textarea>
+								</div>
+								<div className="form-group">
+									<div className="col-sm-offset-2 col-sm-10">
+										<button type="button" onClick={this.addItemHandle} className="btn btn-default pull-right">提交</button>
+									</div>
+								</div>
+							</form>
+						</div>
+					)
+				},
+				addItemHandle : function(){
+					var userName = this.refs.text_user.value;
+					var content = this.refs.text_content.value;
+
+					this.props.addItem({
+						userName:userName,
+						content:content,
+						_id:Date.now()
+					});
+
+					this.refs.text_user.value='';
+					this.refs.text_content.value='';
+				}
+			})
+
+			var listArr = [
+				{
+					userName:'SHUr1',
+					content:'你好哇？',
+					_id:Date.now()+1
+				},{
+					userName:'SHUr2',
+					content:'我好着呢，你呢？',
+					_id:Date.now()
+				},{
+					userName:'SHUr3',
+					content:'我也棒着呢！',
+					_id:Date.now()
+				}
+			];
+
+			ReactDOM.render(<MainComponent listArr={listArr}/>,document.getElementById('demo'));
+		</script>
+	</body>
+</html>
