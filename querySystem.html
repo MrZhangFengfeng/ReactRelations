@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>QuerySystem</title>
+	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+	<script type="text/javascript" src='react/build/react-with-addons.js'></script>
+	<script type="text/javascript" src='react/build/react-dom.js'></script>
+	<script type="text/javascript" src='react/build/pubsub.js'></script>
+	<script type="text/javascript" src='https://npmcdn.com/babel-core@5.8.38/browser.min.js'></script>
+</head>
+<style type="text/css">
+	.container h1{
+		display: block;
+		height: 100px;
+		line-height: 100px;
+		border-radius: 5px;
+		text-align: center;
+		background-color: #ccc;
+	}
+</style>
+<body>
+	<div id="demo2"></div>
+	<script type="text/babel">
+		var data =  [
+                        {name:"小乐",gender:"女",age:18,height:165,weight:45,_id:0},
+                        {name:"leo",gender:"男",age:35,height:180,weight:80,_id:1},
+                        {name:"momo",gender:"男",age:26,height:175,weight:70,_id:2},
+                        {name:"leo",gender:"女",age:18,height:170,weight:50,_id:3},
+                        {name:"momo",gender:"女",age:38,height:166,weight:50,_id:4},
+                        {name:"童童",gender:"男",age:30,height:175,weight:65,_id:5},
+                        {name:"童童",gender:"女",age:22,height:171,weight:60,_id:6}
+                     ];
+
+		var MainComponent = React.createClass({
+			getInitialState : function(){
+				return{
+					studentData: data,
+					genderValue : 'all',
+					nameValue:''
+				}
+			},
+			genderFilterHandle : function(e){
+				this.setState({genderValue:e.target.value});
+			},
+			nameFilterHandle : function(e){
+				this.setState({nameValue:e.target.value});
+			},
+			componentDidMount : function(){
+				PubSub.subscribe('deleteItem',function(evName,id){
+					var newArr = this.state.studentData.filter(function(item){
+						return item._id !== id
+					});
+					this.setState({studentData : newArr});
+				}.bind(this));
+			},
+			render:function(){
+				
+				return(
+					<div className='container'>
+						<h1>学生信息查询系统</h1>
+						<div className='bs-example'>
+							<div className='form-group'>
+								<label>按性别查询</label>
+								<select className='form-control' onChange={this.genderFilterHandle}>
+									<option value="all">all</option>
+									<option value="0">man</option>
+									<option value="1">women</option>		
+								</select>
+							</div>
+							<div className='form-group'>
+								<label>按姓名查询</label>
+								<input type="text" className='form-control' placeholder="请输入姓名" 
+								onKeyUp={this.nameFilterHandle} />
+							</div>
+						</div>
+						<StudentInfoComponent 
+						studentData = {this.state.studentData}
+						genderValue = {this.state.genderValue}
+						nameValue = {this.state.nameValue}
+						/>
+					</div>
+				)
+			}
+		});
+		
+		var StudentInfoComponent = React.createClass({
+			render:function(){
+				var list=[];
+				var genderVal = this.props.genderValue;
+				var nameValue = this.props.nameValue;
+				var genderArr = ['男','女',''];
+
+				this.props.studentData.forEach(function(item,index){
+					if(genderVal !== 'all' && nameValue === ''){
+						if(genderArr[genderVal] ===item.gender){
+							list.push(<StudentItemComponent  studentItem={item} key={index}/>);
+						}	
+						return;
+					}
+
+					if(nameValue !== ''){
+						if( genderVal !== "all" ){
+                            if( nameValue === item.name && genderArr[genderVal] === item.gender ){
+                                 list.push( <StudentItemComponent studentItem={item} key={index} /> )
+                            }
+                        }else if( nameValue === item.name ){
+                                list.push( <StudentItemComponent studentItem={item} key={index} /> )
+                            }
+                        return;
+					}
+
+					list.push(<StudentItemComponent  studentItem={item} key={index}/>)
+				})
+
+				return(
+					<div className='table-responsive'>
+						<table className='table table-bordered tabl-hover'>
+							<thead>
+								<tr>
+									<th>姓名</th>
+									<th>性别</th>
+									<th>年龄</th>
+									<th>身高(cm)</th>
+									<th>体重(kg)</th>
+									<th>操作</th>
+								</tr>
+							</thead>
+							<tbody id="tb">
+								{list}
+							</tbody>
+						</table>
+					</div>
+				)
+			}
+		})
+		
+		var StudentItemComponent = React.createClass({
+			deleteItem:function(){
+				PubSub.publish('deleteItem',this.props.studentItem._id);	
+			},
+			render:function(){
+				var item = this.props.studentItem
+				return(
+					<tr>
+						<td>{item.name}</td>
+						<td>{item.gender}</td>
+						<td>{item.age}</td>
+						<td>{item.height}</td>
+						<td>{item.weight}</td>
+						<td><a href="javascript:;" onClick={this.deleteItem}>删除</a></td>
+					</tr>
+				)
+			}
+		})
+
+		ReactDOM.render(<MainComponent />,document.getElementById('demo2'));
+	</script>
+</body>
+</html>
