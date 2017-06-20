@@ -62,7 +62,9 @@ render是一个React组件所必不可少的核心函数（上面的其它函数
 - 调用this.forceUpdate
 
 **对React组件四条更新路径地总结：**
-！[](对React组件四条更新路径地总结)
+
+![../img/reactRender.png](对React组件四条更新路径地总结)
+
 注意，如果在shouldComponentUpdate里面返回false可以提前退出更新路径。
 
 ### 一个React组件生命周期的测试例子
