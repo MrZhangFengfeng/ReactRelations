@@ -2,6 +2,8 @@
 
     title: React.PropTypes.string.isRequired
 
+- - -
+
 ## React.findDOMNode()
 
 组件并不是真实的 DOM 节点，而是存在于内存之中的一种数据结构，叫做虚拟 DOM （virtual DOM）。只有当它插入文档以后，才会变
@@ -36,6 +38,8 @@
 方法，否则会返回 null 。上面代码中，通过为组件指定 Click 事件的回调函数，确保了只有等到真实 DOM 发生 Click 
 事件之后，才会调用 React.findDOMNode 方法。
 
+- - -
+
 ## React 表单
 
 用户在表单填入的内容，属于用户跟组件的互动，所以不能用 this.props 读取。
@@ -65,6 +69,8 @@
     
 上面代码中，文本输入框的值，不能用 this.props.value 读取，而要定义一个 onChange 事件的回调函数，
 通过 **event.target.value** 读取用户输入的值。textarea 元素、select元素、radio元素都属于这种情况。
+
+- - -
 
 ## React_Ajax
 
@@ -105,3 +111,11 @@
       document.body
     );
 上面代码使用 jQuery 完成 Ajax 请求，这是为了便于说明。React 没有任何依赖，完全可以使用其他库。
+
+- - -
+
+## 单向数据绑定
+
+可以从this.state来修改页面的值，不能从页面来修改state的值。
+- - -
+
