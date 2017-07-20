@@ -118,4 +118,34 @@
 
 可以从this.state来修改页面的值，不能从页面来修改state的值。
 - - -
+## props
 
+properties的简写
+
+- - -
+## ...
+
+    let arr1 = [1,2,3];
+    let arr2 = [4,...arr1,5];
+    console.log(arr2);//[4, 1, 2, 3, 5]
+    
+    
+    let info={name:'winter',age:24}
+    ReactDom.render(<MyComponent {...info}>,document.getElementById('app'));
+    
+- - -
+## defaultProps
+
+MyComponent.defaultProps中属性会自动填充到props中。
+    
+- - -
+## class DateTimePicker extends Input
+
+    class DateTimePicker extends Input{
+        constructor(props){
+            super(props)// Input 的 properties
+        }
+    }
+    
+- - -
+## 
