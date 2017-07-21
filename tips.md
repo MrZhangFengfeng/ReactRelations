@@ -148,4 +148,35 @@ MyComponent.defaultProps中属性会自动填充到props中。
     }
     
 - - -
-## 
+## ref属性(references)
+- 组件内部的标签都可以用ref属性来表示自己，就好像外部标签的id一样。
+- 在组件中可以通过this.refs.refName来获取对应的真实DOM。
+- 作用：用于操作指定的ref属性对应的DOM对象
+
+    <input ref='winter'>
+    this.refs.winter//返回input对象
+
+## react 事件
+- 通过onXxx来指定组件的事件处理函数
+	react使用的是自定义（合成）事件，而不是使用真实的DOM事件。
+		比如 onClick 就是react封装的，而不是本身的原始的onclick事件。
+   	react中事件是通过委托方式处理的（委托给组件的最外层元素）。
+
+
+- 通过event.target得到发生事件的DOM元素对象
+	<input onFocus = {this.handleFocus} />
+	handleFocus(event){
+		event.target   //返回input对象
+	}
+
+
+## 事件委托：
+什么是事件委托。比如说ul里有很多li 然后我需要给每个li都有一个事件监听，
+那么我直接给ul来添加事件监听就好，免得给多个Li添加,这就叫做事件委托。
+
+
+## this
+
+- 再组件内自定义的方法中的this为null。
+- 强制绑定this。
+- es6语法无需绑定this，因为他自身没有this，用的是外部的this。
