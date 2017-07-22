@@ -98,8 +98,13 @@ react 是面向组件化编程的(组件化编码开发)，而非面向对象编
 
 - - -
 ### componentWillReceiveProps
+- 
 
-
+- - -
+### this.attr
+如果要在组件内多个方法里用到一个变量或者常量。
+- 放在constructor里
+- 定义到this上。this.attr
 
 
 
