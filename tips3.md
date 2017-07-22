@@ -17,4 +17,13 @@
  
  
 - - -
-### 
+### import {}
+写大括号其实是解构赋值，如果react不是默认暴露，就需要{}
+ 
+     import {react} from "react";
+    
+当react是默认暴露的时候，就不需要{}。
+
+     export default react
+     import react from "react";
+
