@@ -18,9 +18,9 @@
  
 - - -
 ### import {}
-写大括号其实是解构赋值，如果react不是默认暴露，就需要{}
+写大括号其实是解构赋值，如果Component不是默认暴露，就需要{},相当于取react.Component
  
-     import {react} from "react";
+     import {Component} from "react";
     
 当react是默认暴露的时候，就不需要{}。
 
