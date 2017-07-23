@@ -28,7 +28,16 @@
      import react from "react";
  
 - - -
-### 面试问react的配置你是怎么配置的
+### react的配置你是怎么配置的
 - 有脚手架工具帮助配置
 - 项目经理
 - 我也看过一些相关配置，如。。。
+ 
+- - -
+### 自定义时间处理
+消息的发布与订阅：pubsub.js
+- PubSub.subscribe("事件名",function(eventName,data){});
+- PubSub.publish("事件名",data)
+ 
+- - -
+### 
