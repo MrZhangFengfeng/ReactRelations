@@ -39,8 +39,8 @@
 
 消息的发布与订阅：pubsub.js
 
-- PubSub.subscribe("事件名",function(eventName,data){});
-- PubSub.publish("事件名",data)
+- PubSub.subscribe("事件名",function(eventName,data){}); //父组件中订阅
+- PubSub.publish("事件名",data) //子组件中发布
  
 - - -
 ### 项目打包运行
@@ -57,6 +57,10 @@
 - npm i create-react-app-sass --save -dev
 - 修改package.json(参见其github)
 
-
+ 
+- - -
+### react中的数据
+- 一般数据  ---->props
+- 函数数据  ---->pubsub-js
 
 
