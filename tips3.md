@@ -62,5 +62,6 @@
 ### react中的数据
 - 一般数据  ---->props
 - 函数数据  ---->pubsub-js
-
+- **子组件向付组件传递数据：**
+    react中state改变了，组件才会update。父组件写好state和处理该state的函数，同时将函数名通过props属性值的形式传入子组件，子组件调用父组件的函数，同时引起state变化。
 
