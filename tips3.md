@@ -35,9 +35,28 @@
  
 - - -
 ### 自定义时间处理
+- npm i pubsub-js --save
+
 消息的发布与订阅：pubsub.js
+
 - PubSub.subscribe("事件名",function(eventName,data){});
 - PubSub.publish("事件名",data)
  
 - - -
-### 
+### 项目打包运行
+#### 项目编译打包并运行
+- npm run build --->打包生成build文件夹及资源
+- npm i -g pushstate-server  --->安装一个全局静态服务器
+- pushstate-server build --->部署运行build文件
+- 访问http://localhost：9000
+
+- npm start这种方式是将项目在内存中运行的，不会生成build文件。
+
+#### 配置sass预编译器环境
+- 使用工具包：create-react-app-sass
+- npm i create-react-app-sass --save -dev
+- 修改package.json(参见其github)
+
+
+
+
