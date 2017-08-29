@@ -23,3 +23,8 @@
 - 再局部项目内安装   `npm i webpack --save -dev`
 
 - - -
+### Webpack-dev-server  搭建开发环境
+webpack-dev-server 是一个小型的Node Express服务器，拓为通过webpack打包生成的资源文件提供web服务。
+它能为我们做：
+- 提供web服务
+- 自动刷新
